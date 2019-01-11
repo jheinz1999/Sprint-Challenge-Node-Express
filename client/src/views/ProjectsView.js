@@ -1,5 +1,7 @@
 import React from 'react';
 
+import ProjectList from '../components/ProjectList';
+
 export default props => {
 
   return (
@@ -7,6 +9,8 @@ export default props => {
     <div className='projects-page'>
 
       <h1>Projects</h1>
+
+      <ProjectList />
 
     </div>
 
