@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 
+import ProjectsView from './views/ProjectsView';
+import ActionsView from './views/ActionsView';
+import ProjectView from './views/ProjectView';
+import ActionView from './views/ActionView';
+
 class App extends Component {
   render() {
     return (
@@ -9,25 +14,25 @@ class App extends Component {
         <Route
           exact
           path='/projects'
-          render={props => <h1>Projects</h1>}
+          render={props => <ProjectsView {...props} />}
         />
 
         <Route
           exact
           path='/projects/:id'
-          render={props => <h1>Specific Project</h1>}
+          render={props => <ProjectView {...props} />}
         />
 
         <Route
           exact
           path='/actions'
-          render={props => <h1>Actions</h1>}
+          render={props => <ActionsView {...props} />}
         />
 
         <Route
           exact
           path='/actions/:id'
-          render={props => <h1>Specific actions</h1>}
+          render={props => <ActionView {...props} />}
         />
 
       </div>
