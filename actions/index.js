@@ -91,26 +91,26 @@ server.post('/', async (req, res) => {
 server.delete('/:id', async (req, res) => {
 
   const id = req.params.id;
-  let project;
+  let action;
 
   try {
 
     try {
 
-      project = await projectDB.get(id);
+      action = await actionDB.get(id);
 
     }
 
     catch (err) {
 
-      res.status(404).json({message: 'The project with that ID does not exist.'});
+      res.status(404).json({message: 'The action with that ID does not exist.'});
       return;
 
     }
 
-    await projectDB.remove(id);
+    await actionDB.remove(id);
 
-    res.status(200).json({message: 'Project successfully deleted.'});
+    res.status(200).json({message: 'Action successfully deleted.'});
 
   }
 
