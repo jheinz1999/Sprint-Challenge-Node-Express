@@ -52,7 +52,14 @@ server.post('/', async (req, res) => {
 
   }
 
-  if (name.length > 128) {
+  else if (typeof name !== 'string') {
+
+    res.status(400).json({message: 'Name must be a string!'});
+    return;
+
+  }
+
+  else if (name.length > 128) {
 
     res.status(400).json({message: 'Invalid project name!'});
     return;
@@ -62,6 +69,13 @@ server.post('/', async (req, res) => {
   if (!description) {
 
     description = 'No description provided.';
+
+  }
+
+  else if (typeof description !== 'string') {
+
+    res.status(400).json({message: 'Description must be a string!'});
+    return;
 
   }
 
@@ -144,11 +158,32 @@ server.put('/:id', async (req, res) => {
   if (!name)
     name = project.name;
 
+  else if (typeof name !== 'string') {
+
+    res.status(400).json({message: 'Name must be a string!'});
+    return;
+
+  }
+
   if (!description)
     description = project.description;
 
+  else if (typeof description !== 'string') {
+
+    res.status(400).json({message: 'Description must be a string!'});
+    return;
+
+  }
+
   if (completed === undefined)
     completed = project.completed;
+
+  else if (typeof completed !== 'boolean') {
+
+    res.status(400).json({message: 'Completed must be a boolean!'});
+    return;
+
+  }
 
   try {
 

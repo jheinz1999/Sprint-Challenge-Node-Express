@@ -55,6 +55,13 @@ server.post('/', async (req, res) => {
 
   if (project_id) {
 
+    if (Number.isNaN(project_id)) {
+
+      res.status(400).json({message: 'Project ID must be a number!'});
+      return;
+
+    }
+
     try {
 
       await projectDB.get(project_id);
@@ -72,13 +79,27 @@ server.post('/', async (req, res) => {
 
   if (!description) {
 
-    description = 'No description provided.';
+    res.status(400).json({message: 'Please send a description!'});
+
+  }
+
+  else if (typeof description !== 'string') {
+
+    res.status(400).json({message: 'Description must be a string!'});
+    return;
 
   }
 
   if (!notes) {
 
     notes = 'No note provided.';
+
+  }
+
+  else if (typeof notes !== 'string') {
+
+    res.status(400).json({message: 'Notes must be a string!'});
+    return;
 
   }
 
@@ -167,6 +188,13 @@ server.put('/:id', async (req, res) => {
 
   if (project_id) {
 
+    if (Number.isNaN(project_id)) {
+
+      res.status(400).json({message: 'Project ID must be a number!'});
+      return;
+
+    }
+
     try {
 
       await projectDB.get(project_id);
@@ -185,14 +213,42 @@ server.put('/:id', async (req, res) => {
   if (!project_id)
     project_id = action.project_id;
 
+  else if (Number.isNaN(project_id)) {
+
+    res.status(400).json({message: 'Project ID must be a number!'});
+    return;
+
+  }
+
   if (!description)
     description = action.description;
+
+  else if (typeof description !== 'string') {
+
+    res.status(400).json({message: 'Description must be a string!'});
+    return;
+
+  }
 
   if (completed === undefined)
     completed = action.completed;
 
+  else if (typeof completed !== 'boolean') {
+
+    res.status(400).json({message: 'Completed must be a boolean!'});
+    return;
+
+  }
+
   if (!notes)
     notes = action.notes;
+
+  else if (typeof notes !== 'string') {
+
+    res.status(400).json({message: 'Notes must be a string!'});
+    return;
+
+  }
 
   try {
 
