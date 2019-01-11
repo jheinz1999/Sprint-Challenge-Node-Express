@@ -1,6 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 
+import ProjectPreview from './ProjectPreview';
+
+import './ProjectList.scss';
+
 export default class ProjectList extends React.Component {
 
   constructor() {
@@ -16,7 +20,7 @@ export default class ProjectList extends React.Component {
 
   }
 
-  async componentDidMount() {
+  fetchData = async () => {
 
     try {
 
@@ -33,6 +37,12 @@ export default class ProjectList extends React.Component {
 
   }
 
+  componentDidMount() {
+
+    this.fetchData();
+
+  }
+
   render() {
 
     const { projects, failed } = this.state;
@@ -44,7 +54,12 @@ export default class ProjectList extends React.Component {
 
       <div className='project-list'>
 
-        {projects ? projects.map(project => <h2>{project.name}</h2>) : <h2>Loading projects...</h2>}
+        {projects ? projects.map(project =>
+          <ProjectPreview
+            key={project.id}
+            data={project}
+            update={this.fetchData}
+          />) : <h2>Loading projects...</h2>}
 
       </div>
 

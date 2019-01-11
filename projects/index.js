@@ -135,6 +135,8 @@ server.put('/:id', async (req, res) => {
   let { name, description, completed } = req.body;
   let project;
 
+  console.log("abc", req.body);
+
   try {
 
     project = await projectDB.get(id);
@@ -148,7 +150,7 @@ server.put('/:id', async (req, res) => {
 
   }
 
-  if (!name && !description && !completed) {
+  if (!name && !description && completed === undefined) {
 
     res.status(400).json({message: 'Invalid properties in request body!'});
     return;
