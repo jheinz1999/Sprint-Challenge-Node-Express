@@ -53,6 +53,23 @@ server.post('/', async (req, res) => {
 
   }
 
+  if (project_id) {
+
+    try {
+
+      await projectDB.get(project_id);
+
+    }
+
+    catch (err) {
+
+      res.status(400).json({message: 'Invalid project ID!'});
+      return;
+
+    }
+
+  }
+
   if (!description) {
 
     description = 'No description provided.';
@@ -125,42 +142,62 @@ server.delete('/:id', async (req, res) => {
 server.put('/:id', async (req, res) => {
 
   const id = req.params.id;
-  let { name, description, completed } = req.body;
-  let project;
+  let { project_id, description, notes, completed } = req.body;
+  let action;
 
   try {
 
-    project = await projectDB.get(id);
+    action = await actionDB.get(id);
 
   }
 
   catch (err) {
 
-    res.status(404).json({message: 'The project with that ID does not exist.'});
+    res.status(404).json({message: 'The action with that ID does not exist.'});
     return;
 
   }
 
-  if (!name && !description && !completed) {
+  if (!project_id && !description && !notes && completed === undefined) {
 
     res.status(400).json({message: 'Invalid properties in request body!'});
     return;
 
   }
 
-  if (!name)
-    name = project.name;
+  if (project_id) {
+
+    try {
+
+      await projectDB.get(project_id);
+
+    }
+
+    catch (err) {
+
+      res.status(400).json({message: 'Invalid project ID!'});
+      return;
+
+    }
+
+  }
+
+  if (!project_id)
+    project_id = action.project_id;
 
   if (!description)
-    description = project.description;
+    description = action.description;
 
   if (completed === undefined)
-    completed = project.completed;
+    completed = action.completed;
+
+  if (!notes)
+    notes = action.notes;
 
   try {
 
-    const newProject = await projectDB.update(id, {name, description, completed});
-    res.status(200).json(newProject);
+    const newAction = await actionDB.update(id, {project_id, description, notes, completed});
+    res.status(200).json(newAction);
 
   }
 
