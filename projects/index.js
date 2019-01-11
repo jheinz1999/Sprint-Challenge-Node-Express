@@ -81,4 +81,37 @@ server.post('/', async (req, res) => {
 
 });
 
+server.delete('/:id', async (req, res) => {
+
+  const id = req.params.id;
+  let project;
+
+  try {
+
+    try {
+
+      project = await projectDB.get(id);
+
+    }
+
+    catch (err) {
+
+      res.status(404).json({message: 'The project with that ID does not exist.'});
+
+    }
+
+    await projectDB.remove(id);
+
+    res.status(200).json({message: 'Project successfully deleted.'});
+
+  }
+
+  catch (err) {
+
+    genericErr(res);
+
+  }
+
+});
+
 module.exports = server;
