@@ -44,18 +44,11 @@ server.get('/:id', async (req, res) => {
 
 server.post('/', async (req, res) => {
 
-  let { name, description } = req.body;
+  let { project_id, description, notes } = req.body;
 
-  if (!name) {
+  if (!project_id) {
 
-    res.status(400).json({message: 'Please send a project name!'});
-    return;
-
-  }
-
-  if (name.length > 128) {
-
-    res.status(400).json({message: 'Invalid project name!'});
+    res.status(400).json({message: 'Please send a project ID!'});
     return;
 
   }
@@ -66,11 +59,24 @@ server.post('/', async (req, res) => {
 
   }
 
+  if (!notes) {
+
+    notes = 'No note provided.';
+
+  }
+
+  if (description.length > 128) {
+
+    res.status(400).json({message: 'Invalid description!'});
+    return;
+
+  }
+
   try {
 
-    const project = await projectDB.insert({name, description});
+    const action = await actionDB.insert({project_id, description, notes});
 
-    res.status(201).json(project);
+    res.status(201).json(action);
 
   }
 
