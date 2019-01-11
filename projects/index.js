@@ -41,4 +41,44 @@ server.get('/:id', async (req, res) => {
 
 });
 
+server.post('/', async (req, res) => {
+
+  let { name, description } = req.body;
+
+  if (!name) {
+
+    res.status(400).json({message: 'Please send a project name!'});
+    return;
+
+  }
+
+  if (name.length > 128) {
+
+    res.status(400).json({message: 'Invalid project name!'});
+    return;
+
+  }
+
+  if (!description) {
+
+    description = 'No description provided.';
+
+  }
+
+  try {
+
+    const project = await projectDB.insert({name, description});
+
+    res.status(201).json(project);
+
+  }
+
+  catch (err) {
+
+    genericErr(res);
+
+  }
+
+});
+
 module.exports = server;
