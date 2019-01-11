@@ -29,14 +29,14 @@ server.get('/:id', async (req, res) => {
 
   try {
 
-    const project = await projectDB.get(id);
-    res.status(200).json(project);
+    const action = await actionDB.get(id);
+    res.status(200).json(action);
 
   }
 
   catch (err) {
 
-    res.status(404).json({message: 'The project with that ID does not exist.'});
+    res.status(404).json({message: 'The action with that ID does not exist.'});
 
   }
 
