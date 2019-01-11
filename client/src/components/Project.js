@@ -1,7 +1,8 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
-import './ProjectPreview.scss';
+import './Project.scss';
 
 const setCompleted = async (id, val, update) => {
 
@@ -20,21 +21,27 @@ const setCompleted = async (id, val, update) => {
 
 }
 
-export default ({data, update}) => {
+export default withRouter(({data, update, history}) => {
 
   const { completed, description, name, id } = data;
 
   return (
 
-    <div className='project'>
+    <div className='project' onClick={() => history.push(`/projects/${id}`)}>
 
       <h2>{name}</h2>
       <p>{description}</p>
       <span>Completed</span>
-      <input type='checkbox' checked={completed} onChange={() => setCompleted(id, !completed, update)} />
+      <input
+        type='checkbox'
+        checked={completed}
+        onClick={e => e.stopPropagation()}
+        onChange={() =>setCompleted(id, !completed, update)}
+      />
 
     </div>
 
   );
 
 }
+)

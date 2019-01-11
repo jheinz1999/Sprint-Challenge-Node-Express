@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import ProjectPreview from './ProjectPreview';
+import ProjectPreview from './Project';
 
 import './ProjectList.scss';
 
