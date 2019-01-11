@@ -97,12 +97,63 @@ server.delete('/:id', async (req, res) => {
     catch (err) {
 
       res.status(404).json({message: 'The project with that ID does not exist.'});
+      return;
 
     }
 
     await projectDB.remove(id);
 
     res.status(200).json({message: 'Project successfully deleted.'});
+
+  }
+
+  catch (err) {
+
+    genericErr(res);
+
+  }
+
+});
+
+server.put('/:id', async (req, res) => {
+
+  const id = req.params.id;
+  let { name, description, completed } = req.body;
+  let project;
+
+  try {
+
+    project = await projectDB.get(id);
+
+  }
+
+  catch (err) {
+
+    res.status(404).json({message: 'The project with that ID does not exist.'});
+    return;
+
+  }
+
+  if (!name && !description && !completed) {
+
+    res.status(400).json({message: 'Invalid properties in request body!'});
+    return;
+
+  }
+
+  if (!name)
+    name = project.name;
+
+  if (!description)
+    description = project.description;
+
+  if (completed === undefined)
+    completed = project.completed;
+
+  try {
+
+    const newProject = await projectDB.update(id, {name, description, completed});
+    res.status(200).json(newProject);
 
   }
 
